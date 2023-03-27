@@ -1,16 +1,17 @@
 import javax.swing.*;
 
-import org.w3c.dom.events.MouseEvent;
+
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.TextEvent;
-public class MovingMessagePanel extends JPanel implements ItemListener,ActionListener,MouseListener{
+public class MovingMessagePanel extends JPanel implements ItemListener,ActionListener,MouseMotionListener,MouseListener{
 
     JFrame main = new JFrame();
     JPanel center = new JPanel();
@@ -30,8 +31,8 @@ public class MovingMessagePanel extends JPanel implements ItemListener,ActionLis
     JButton right = new JButton("Right");
     JButton up = new JButton("Up");
     JButton down = new JButton("Down");
-    int x = getX();
-    int y = getY();
+    int x = 0;
+    int y = 100;
     String message  ="";
     //Action events
     
@@ -65,11 +66,13 @@ public class MovingMessagePanel extends JPanel implements ItemListener,ActionLis
         right.addActionListener(this);
         up.addActionListener(this);
         down.addActionListener(this);
-
+        
         main.setVisible(true);
         main.setSize(800,400);
-        main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         main.setLocationRelativeTo(null);
+        addMouseMotionListener(this);
+        
     }
 
     protected void paintComponent(Graphics g) {
@@ -80,7 +83,7 @@ public class MovingMessagePanel extends JPanel implements ItemListener,ActionLis
         g.setColor(textColor);
         g.drawString(message, x,y);
     }
-    public void ItemListener(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {
         if(e.getSource() == tf){
             message = e.getActionCommand();
             
@@ -107,10 +110,11 @@ public class MovingMessagePanel extends JPanel implements ItemListener,ActionLis
     }
     public void mouseDragged(MouseEvent e) {
         if (radiobutton.isSelected()){
-            x=getX();
-            y=getY();
-            repaint();
+            x = e.getX();
+            y = e.getY();
+            
         }
+        repaint();
         
     }
     public  void itemStateChanged(ItemEvent e){
@@ -126,6 +130,24 @@ public class MovingMessagePanel extends JPanel implements ItemListener,ActionLis
         }
         repaint();
     }
+   
+   
+
+    
+    public static void main(String[] args) {
+        MovingMessagePanel test = new MovingMessagePanel();
+        
+    }
+
+   
+    
+
+    @Override
+    public void mouseMoved(java.awt.event.MouseEvent e) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'mouseMoved'");
+    }
+
     @Override
     public void mouseClicked(java.awt.event.MouseEvent e) {
         // TODO Auto-generated method stub
@@ -154,18 +176,6 @@ public class MovingMessagePanel extends JPanel implements ItemListener,ActionLis
     public void mouseExited(java.awt.event.MouseEvent e) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'mouseExited'");
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
-    }
-
-    
-    public static void main(String[] args) {
-        MovingMessagePanel test = new MovingMessagePanel();
-        
     }
 
     
